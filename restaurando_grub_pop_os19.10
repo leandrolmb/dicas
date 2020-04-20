@@ -1,5 +1,8 @@
+-------------------------------------------------------------------------------------------------------------------
 Se voce instalou o Pop!_OS 19.10 com o Windows e não consegue mais acessar o Windows, siga os procedimentos abaixo:
 -------------------------------------------------------------------------------------------------------------------
+
+
 Acessar o arquivo grub no seguinte caminho: /etc/default/grub
 E comentar a linha com "#" (sem aspas)e aumentar o tempo de mostragem da tela do grub, conforme abaixo:
 
@@ -42,6 +45,7 @@ Depois atualize o init do grub com: grub-update e reinicie.
 
 Agora deve mostrar para voce o grub! =)
 
-Referencias:
-https://wiki.debian.org/DualBoot/Windows10
+
+____________________________________________________________________________________________________________________
+Referencias do PAI Debian <3: https://wiki.debian.org/DualBoot/Windows10
 
