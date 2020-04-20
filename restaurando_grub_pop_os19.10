@@ -1,0 +1,47 @@
+Se voce instalou o Pop!_OS 19.10 com o Windows e não consegue mais acessar o Windows, siga os procedimentos abaixo:
+-------------------------------------------------------------------------------------------------------------------
+Acessar o arquivo grub no seguinte caminho: /etc/default/grub
+E comentar a linha com "#" (sem aspas)e aumentar o tempo de mostragem da tela do grub, conforme abaixo:
+
+GRUB_DEFAULT=0
+#GRUB_TIMEOUT_STYLE=hidden   <---
+GRUB_TIMEOUT=30              <--- (Eu optei por usar 30 segundos)
+GRUB_DISTRIBUTOR=`lsb_release -i -s 2> /dev/null || echo Debian`
+GRUB_CMDLINE_LINUX_DEFAULT="quiet splash"
+GRUB_CMDLINE_LINUX=""
+
+Ainda nesse arquivo, adicione a linha abaixo, no fim do arquivo:
+
+GRUB_DISABLE_OS_PROBER=true
+
+Salve o arquivo e saia.
+
+Agora, precisa encontrar o UUID da partição onde seu Windows esta instalado. 
+Use fdisk -l para encontrar a partição (na descrisão "Tipo" é algo como "HPFS/NTFS/exFAT" essa é a partição do seu Windows)
+
+Entao como root, rode o comando abaixo, onde "X" é o numero da partição onde se encontra seu Windows (SOMENTE COMO root o comando abaixo)
+
+blkid /dev/sdaX
+
+Então a saida desse comando sera algo como:
+
+/dev/sda1: LABEL="Reservado pelo Sistema" UUID="4EEC93HH88SF37" TYPE="ntfs" PARTUUID="f58708e7-01"
+
+Copie o UUID e como root, edite o arquivo /etc/grub.d/40_custom e adicione o conteudo abaixo, substituindo ao final o UUID do sua partição:
+
+
+menuentry "Windows 10" --class windows --class os {
+   insmod ntfs
+   search --no-floppy --set=root --fs-uuid 4EEC93HH88SF37
+   ntldr /bootmgr
+}
+
+Salve o arquivo e saia.
+
+Depois atualize o init do grub com: grub-update e reinicie.
+
+Agora deve mostrar para voce o grub! =)
+
+Referencias:
+https://wiki.debian.org/DualBoot/Windows10
+
